@@ -1,4 +1,10 @@
 ---
+interface Props {
+  frontmatter: {
+    title: string;
+  };
+}
+
 const { frontmatter } = Astro.props;
 import NavBar from "../components/NavBar.astro";
 import ArticleHeader from "../components/ArticleHeader.astro";
