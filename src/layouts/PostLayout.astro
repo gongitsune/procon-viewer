@@ -1,13 +1,21 @@
 ---
-const {frontmatter} = Astro.props;
+const { frontmatter } = Astro.props;
+import NavBar from "../components/NavBar.astro";
+import ArticleHeader from "../components/ArticleHeader.astro";
+import Article from "../components/Article.astro";
 ---
+
 <html>
   <head>
     <title>{frontmatter.title}</title>
   </head>
   <body>
-    <h1>{frontmatter.title} by {frontmatter.author}</h1>
-    <slot />
-    <p>Written on: {frontmatter.date}</p>
+    <NavBar />
+    <ArticleHeader title={frontmatter.title} />
+    <div class="flex lg:flex-col justify-center items-center">
+      <Article>
+        <slot />
+      </Article>
+    </div>
   </body>
 </html>
