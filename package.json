@@ -21,6 +21,7 @@
     "autoprefixer": "^10.4.16",
     "daisyui": "^4.0.6",
     "prettier": "^3.1.0",
-    "prettier-plugin-astro": "^0.12.2"
+    "prettier-plugin-astro": "^0.12.2",
+    "tailwind-variants": "^0.1.18"
   }
 }
