@@ -1,48 +1,54 @@
 ---
 import type { MarkdownHeading } from "astro";
-import { tv } from "tailwind-variants";
+import "../extensions/array";
+
 interface Props {
   headings: MarkdownHeading[];
+  baseTocLevel?: number;
 }
 
-const tocLabel = tv({
-  base: "mb-2",
-  variants: {
-    level: {
-      1: "font-bold",
-      2: "",
-      3: "ml-4",
-    },
-  },
-});
-const { headings } = Astro.props;
+const { headings, baseTocLevel = 1 } = Astro.props;
 ---
 
 <div>
   <aside class="bg-base-200 p-4 rounded-2xl sticky top-4">
     <span class="text-xl font-bold">Index</span>
-    <ol class="mt-4">
+    <ul class="menu">
       {
         headings
-          .filter((h) => h.depth < 5)
-          .map((h) => {
+          .enumerate()
+          .filter(([, h]) => h.depth === baseTocLevel)
+          .map(([i, h]) => {
+            const build = (level: number, start: number) => {
+              const f = headings
+                .enumerate()
+                .slice(start + 1)
+                .skipLater(([, h]) => h.depth < level)
+                .filter(([, h]) => h.depth === level);
+
+              return (
+                f.length !== 0 && (
+                  <ul>
+                    {f.map(([i, h]) => (
+                      <li>
+                        <a href={`#${h.slug}`}>{h.text}</a>
+                        {build(h.depth + 1, i)}
+                      </li>
+                    ))}
+                  </ul>
+                )
+              );
+            };
+
             return (
-              <li class={tocLabel({ level: h.depth as any })}>
-                {h.depth >= 2 && (
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 -9 3 24"
-                    class="inline-block w-7 h-7 stroke-current"
-                  >
-                    <path d="M0 0L3 3L0 6" stroke-width="2" />
-                  </svg>
-                )}
+              <li>
                 <a href={`#${h.slug}`}>{h.text}</a>
+                {build(h.depth + 1, i)}
               </li>
             );
           })
+          .filter(Boolean)
       }
-    </ol>
+    </ul>
   </aside>
 </div>

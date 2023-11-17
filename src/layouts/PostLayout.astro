@@ -27,7 +27,7 @@ import Toc from "../components/Toc.astro";
       <Article>
         <slot />
       </Article>
-      <Toc headings={headings} />
+      <Toc headings={headings} baseTocLevel={1} />
     </div>
   </body>
 </html>
