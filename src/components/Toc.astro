@@ -24,20 +24,15 @@ const { headings, baseTocLevel = 1 } = Astro.props;
                 .enumerate()
                 .slice(start + 1)
                 .skipLater(([, h]) => h.depth < level)
-                .filter(([, h]) => h.depth === level);
+                .filter(([, h]) => h.depth === level)
+                .map(([i, h]) => (
+                  <li>
+                    <a href={`#${h.slug}`}>{h.text}</a>
+                    {build(h.depth + 1, i)}
+                  </li>
+                ));
 
-              return (
-                f.length !== 0 && (
-                  <ul>
-                    {f.map(([i, h]) => (
-                      <li>
-                        <a href={`#${h.slug}`}>{h.text}</a>
-                        {build(h.depth + 1, i)}
-                      </li>
-                    ))}
-                  </ul>
-                )
-              );
+              return f.length !== 0 && <ul>{f}</ul>;
             };
 
             return (

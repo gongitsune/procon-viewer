@@ -1,12 +1,4 @@
 ---
-interface Props {
-  frontmatter: {
-    title: string;
-  };
-  headings: MarkdownHeading[];
-}
-
-const { frontmatter, headings } = Astro.props;
 import NavBar from "../components/NavBar.astro";
 import ArticleHeader from "../components/ArticleHeader.astro";
 import Article from "../components/Article.astro";
@@ -14,6 +6,16 @@ import type { MarkdownHeading } from "astro";
 import Toc from "../components/Toc.astro";
 import Footer from "../components/Footer.astro";
 import InfoHeader from "../components/InfoHeader.astro";
+import type { z } from "astro:content";
+import { postsSchema } from "../content/config";
+
+interface Props {
+  frontmatter: z.infer<typeof postsSchema>;
+  headings: MarkdownHeading[];
+  path: string[];
+}
+
+const { frontmatter, headings, path } = Astro.props;
 ---
 
 <html>
@@ -24,7 +26,7 @@ import InfoHeader from "../components/InfoHeader.astro";
   </head>
   <body class="bg-base-200">
     <NavBar />
-    <InfoHeader />
+    <InfoHeader path={path} />
     <ArticleHeader title={frontmatter.title} />
     <div
       class="flex flex-col items-center lg:flex-row lg:justify-center lg:items-stretch gap-8 mb-8"

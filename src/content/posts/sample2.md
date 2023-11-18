@@ -1,3 +1,7 @@
+---
+title: "Sample 2"
+---
+
 ![Renovate banner](https://app.renovatebot.com/images/renovate_660_220.jpg)
 
 # Renovate
