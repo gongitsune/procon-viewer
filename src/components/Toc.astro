@@ -1,49 +1,42 @@
 ---
 import type { MarkdownHeading } from "astro";
-import "../extensions/array";
-
 interface Props {
   headings: MarkdownHeading[];
-  baseTocLevel?: number;
+  baseTocLevel: number;
 }
 
-const { headings, baseTocLevel = 1 } = Astro.props;
+const { headings, baseTocLevel }: Props = Astro.props;
 ---
 
-<div>
-  <aside class="bg-base-100 p-4 rounded-2xl sticky top-4">
-    <span class="text-xl font-bold">Index</span>
-    <ul class="menu">
-      {
-        headings
-          .enumerate()
-          .filter(([, h]) => h.depth === baseTocLevel)
-          .map(([i, h]) => {
-            const build = (level: number, start: number) => {
-              const f = headings
-                .enumerate()
-                .slice(start + 1)
-                .skipLater(([, h]) => h.depth < level)
-                .filter(([, h]) => h.depth === level)
-                .map(([i, h]) => (
-                  <li>
-                    <a href={`#${h.slug}`}>{h.text}</a>
-                    {build(h.depth + 1, i)}
-                  </li>
-                ));
-
-              return f.length !== 0 && <ul>{f}</ul>;
-            };
-
-            return (
+<>
+  {
+    headings
+      .enumerate()
+      .filter(([, h]) => h.depth === baseTocLevel)
+      .map(([i, h]) => {
+        const build = (level: number, start: number) => {
+          const f = headings
+            .enumerate()
+            .slice(start + 1)
+            .skipLater(([, h]) => h.depth < level)
+            .filter(([, h]) => h.depth === level)
+            .map(([i, h]) => (
               <li>
                 <a href={`#${h.slug}`}>{h.text}</a>
                 {build(h.depth + 1, i)}
               </li>
-            );
-          })
-          .filter(Boolean)
-      }
-    </ul>
-  </aside>
-</div>
+            ));
+
+          return f.length !== 0 && <ul>{f}</ul>;
+        };
+
+        return (
+          <li>
+            <a href={`#${h.slug}`}>{h.text}</a>
+            {build(h.depth + 1, i)}
+          </li>
+        );
+      })
+      .filter(Boolean)
+  }
+</>

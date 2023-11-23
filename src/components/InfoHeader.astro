@@ -1,21 +1,50 @@
 ---
+import type { MarkdownHeading } from "astro";
+import Toc from "./Toc.astro";
+
 interface Props {
   path: string[];
+  headings: MarkdownHeading[];
+  baseTocLevel?: number;
 }
 
-const { path } = Astro.props;
+const { path, headings, baseTocLevel = 1 } = Astro.props;
 ---
 
-<div class="navbar bg-base-100 border-t-2 border-base-200">
-  <div class="breadcrumbs ml-4">
+<div class="navbar bg-base-100 border-t-2 border-base-200 sticky top-0">
+  <div class="breadcrumbs ml-4 navbar-start">
     <ul>
       {
-        path.map((p) => (
+        path.map((p, i) => (
           <li>
-            <a href={`/${p}`}>{p}</a>
+            <a href={"/" + path.slice(0, i + 1).join("/")}>{p}</a>
           </li>
         ))
       }
     </ul>
+  </div>
+  <div class="navbar-end mr-4">
+    <div class="dropdown dropdown-end">
+      <label tabindex="0" class="btn btn-ghost lg:hidden">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          class="h-5 w-5"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+          ><path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M4 6h16M4 12h8m-8 6h16"></path></svg
+        >
+      </label>
+      <ul
+        tabindex="0"
+        class="menu dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box min-w-max"
+      >
+        <Toc headings={headings} baseTocLevel={baseTocLevel} />
+      </ul>
+    </div>
   </div>
 </div>

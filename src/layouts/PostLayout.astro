@@ -3,7 +3,7 @@ import NavBar from "../components/NavBar.astro";
 import ArticleHeader from "../components/ArticleHeader.astro";
 import Article from "../components/Article.astro";
 import type { MarkdownHeading } from "astro";
-import Toc from "../components/Toc.astro";
+import Index from "../components/Index.astro";
 import Footer from "../components/Footer.astro";
 import InfoHeader from "../components/InfoHeader.astro";
 import type { z } from "astro:content";
@@ -26,15 +26,15 @@ const { frontmatter, headings, path } = Astro.props;
   </head>
   <body class="bg-base-200">
     <NavBar />
-    <InfoHeader path={path} />
+    <InfoHeader path={path} headings={headings} baseTocLevel={2} />
     <ArticleHeader title={frontmatter.title} />
     <div
-      class="flex flex-col items-center lg:flex-row lg:justify-center lg:items-stretch gap-8 mb-8"
+      class="flex flex-col items-center lg:flex-row lg:justify-center lg:items-stretch gap-8 mb-8 lg:p-4"
     >
       <Article>
         <slot />
       </Article>
-      <Toc headings={headings} baseTocLevel={1} />
+      <Index headings={headings} baseTocLevel={2} />
     </div>
     <Footer />
   </body>

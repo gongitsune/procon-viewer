@@ -1,0 +1,21 @@
+---
+import type { MarkdownHeading } from "astro";
+import Toc from "./Toc.astro";
+import "../extensions/array";
+
+interface Props {
+  headings: MarkdownHeading[];
+  baseTocLevel?: number;
+}
+
+const { headings, baseTocLevel = 1 } = Astro.props;
+---
+
+<div class="hidden lg:inline">
+  <aside class="bg-base-100 p-4 rounded-2xl sticky top-4">
+    <span class="text-xl font-bold">Index</span>
+    <ul class="menu">
+      <Toc headings={headings} baseTocLevel={baseTocLevel} />
+    </ul>
+  </aside>
+</div>
