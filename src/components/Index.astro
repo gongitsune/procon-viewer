@@ -12,7 +12,7 @@ const { headings, baseTocLevel = 1 } = Astro.props;
 ---
 
 <div class="hidden lg:inline">
-  <aside class="bg-base-100 p-4 rounded-2xl sticky top-4">
+  <aside class="bg-base-100 p-4 rounded-2xl sticky top-[90px]">
     <span class="text-xl font-bold">Index</span>
     <ul class="menu">
       <Toc headings={headings} baseTocLevel={baseTocLevel} />
